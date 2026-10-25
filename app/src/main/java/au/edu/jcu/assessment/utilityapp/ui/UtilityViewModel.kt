@@ -18,6 +18,13 @@ class UtilityViewModel(
     var isLoading by mutableStateOf(false)
         private set
 
+    var showCatFact by mutableStateOf(true)
+        private set
+
+    fun setCatFactVisibility(show: Boolean) {
+        showCatFact = show
+    }
+
     fun loadData() {
         viewModelScope.launch {
             isLoading = true

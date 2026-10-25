@@ -7,7 +7,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -18,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,6 +28,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -55,6 +59,7 @@ fun UtilityAppPreview() {
 @Composable
 fun UtilityApp() {
     var selectedTab by remember { mutableStateOf("Utility") }
+    val viewModel: UtilityViewModel = viewModel()
 
     Scaffold(
         bottomBar = {
@@ -76,8 +81,8 @@ fun UtilityApp() {
     ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
             when (selectedTab) {
-                "Utility" -> UtilityScreen()
-                "Settings" -> SettingsScreen()
+                "Utility" -> UtilityScreen(viewModel)
+                "Settings" -> SettingsScreen(viewModel)
             }
         }
     }
@@ -92,10 +97,13 @@ fun UtilityScreen(viewModel: UtilityViewModel = viewModel()) {
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text("Utility Screen", style = MaterialTheme.typography.headlineMedium)
-        Text(
-            text = if (viewModel.isLoading) "Loading..." else viewModel.utilityData,
-            style = MaterialTheme.typography.bodyLarge
-        )
+        
+        if (viewModel.showCatFact) {
+            Text(
+                text = if (viewModel.isLoading) "Loading..." else viewModel.utilityData,
+                style = MaterialTheme.typography.bodyLarge
+            )
+        }
 
         Button(
             onClick = { viewModel.loadData() },
@@ -107,13 +115,25 @@ fun UtilityScreen(viewModel: UtilityViewModel = viewModel()) {
 }
 
 @Composable
-fun SettingsScreen() {
+fun SettingsScreen(viewModel: UtilityViewModel = viewModel()) {
     Column(
         Modifier
             .fillMaxSize()
             .padding(24.dp), Arrangement.spacedBy(16.dp)
     ) {
         Text("Settings Screen", style = MaterialTheme.typography.headlineMedium)
-        Text("This is where you can add toggles or preferences.")
+        Text("Configure your app preferences below.")
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text("Show cat fact", style = MaterialTheme.typography.bodyLarge)
+            Switch(
+                checked = viewModel.showCatFact,
+                onCheckedChange = { viewModel.setCatFactVisibility(it) }
+            )
+        }
     }
 }
