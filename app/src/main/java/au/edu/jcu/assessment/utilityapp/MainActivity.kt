@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import au.edu.jcu.assessment.utilityapp.ui.UtilityViewModel
+import au.edu.jcu.assessment.utilityapp.ui.CatBreedScreen
 import au.edu.jcu.assessment.utilityapp.ui.theme.MobileTech_UtilityAppTheme
 
 private val Pink = Color(0xFFFF8FAB)
@@ -89,6 +90,18 @@ fun UtilityApp() {
                 )
 
                 NavigationBarItem(
+                    selected = selectedTab == "Breeds",
+                    onClick = { selectedTab = "Breeds" },
+                    icon = {
+                        Icon(
+                            Icons.Outlined.FavoriteBorder,
+                            contentDescription = "Breeds"
+                        )
+                    },
+                    label = { Text("Breeds") }
+                )
+
+                NavigationBarItem(
                     selected = selectedTab == "Settings",
                     onClick = { selectedTab = "Settings" },
                     icon = {
@@ -117,6 +130,7 @@ fun UtilityApp() {
             when (selectedTab) {
                 "Home" -> UtilityScreen(viewModel)
                 "Favourites" -> FavouritesScreen(viewModel)
+                "Breeds" -> CatBreedScreen()
                 "Settings" -> SettingsScreen(viewModel)
             }
         }
