@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import au.edu.jcu.assessment.utilityapp.ui.UtilityViewModel
 import au.edu.jcu.assessment.utilityapp.ui.CatBreedScreen
+import au.edu.jcu.assessment.utilityapp.ui.CatAgeCalculatorScreen
 import au.edu.jcu.assessment.utilityapp.ui.theme.MobileTech_UtilityAppTheme
 
 private val Pink = Color(0xFFFF8FAB)
@@ -81,10 +82,7 @@ fun UtilityApp() {
                     selected = selectedTab == "Favourites",
                     onClick = { selectedTab = "Favourites" },
                     icon = {
-                        Icon(
-                            Icons.Default.Favorite,
-                            contentDescription = "Favourites"
-                        )
+                        Icon(Icons.Default.Favorite, contentDescription = "Favourites")
                     },
                     label = { Text("Favourites") }
                 )
@@ -93,12 +91,18 @@ fun UtilityApp() {
                     selected = selectedTab == "Breeds",
                     onClick = { selectedTab = "Breeds" },
                     icon = {
-                        Icon(
-                            Icons.Outlined.FavoriteBorder,
-                            contentDescription = "Breeds"
-                        )
+                        Icon(Icons.Outlined.FavoriteBorder, contentDescription = "Breeds")
                     },
                     label = { Text("Breeds") }
+                )
+
+                NavigationBarItem(
+                    selected = selectedTab == "Age Calculator",
+                    onClick = { selectedTab = "Age Calculator" },
+                    icon = {
+                        Icon(Icons.Default.Home, contentDescription = "Age Calculator")
+                    },
+                    label = { Text("Age") }
                 )
 
                 NavigationBarItem(
@@ -131,6 +135,7 @@ fun UtilityApp() {
                 "Home" -> UtilityScreen(viewModel)
                 "Favourites" -> FavouritesScreen(viewModel)
                 "Breeds" -> CatBreedScreen()
+                "Age Calculator" -> CatAgeCalculatorScreen()
                 "Settings" -> SettingsScreen(viewModel)
             }
         }
@@ -139,7 +144,6 @@ fun UtilityApp() {
 
 @Composable
 fun UtilityScreen(viewModel: UtilityViewModel) {
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -147,7 +151,6 @@ fun UtilityScreen(viewModel: UtilityViewModel) {
             .padding(22.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -161,14 +164,12 @@ fun UtilityScreen(viewModel: UtilityViewModel) {
                     fontWeight = FontWeight.Bold,
                     letterSpacing = 2.sp
                 )
-
                 Text(
                     "Catopia 🐱",
                     color = DarkText,
                     fontSize = 34.sp,
                     fontWeight = FontWeight.ExtraBold
                 )
-
                 Text(
                     "A little happiness, one paw at a time.",
                     color = DarkText.copy(alpha = 0.7f),
@@ -181,11 +182,7 @@ fun UtilityScreen(viewModel: UtilityViewModel) {
                 color = Color.White,
                 shadowElevation = 5.dp
             ) {
-                Text(
-                    "🐾",
-                    fontSize = 36.sp,
-                    modifier = Modifier.padding(12.dp)
-                )
+                Text("🐾", fontSize = 36.sp, modifier = Modifier.padding(12.dp))
             }
         }
 
@@ -204,14 +201,12 @@ fun UtilityScreen(viewModel: UtilityViewModel) {
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold
                 )
-
                 Text(
                     "Did you know something pawsome today?",
                     color = Color.White,
                     fontSize = 23.sp,
                     fontWeight = FontWeight.Bold
                 )
-
                 Text(
                     "Discover fascinating facts about our furry friends!",
                     color = Color.White.copy(alpha = 0.9f),
@@ -231,11 +226,7 @@ fun UtilityScreen(viewModel: UtilityViewModel) {
                 fontSize = 21.sp,
                 fontWeight = FontWeight.Bold
             )
-
-            Surface(
-                color = LightPink,
-                shape = RoundedCornerShape(50.dp)
-            ) {
+            Surface(color = LightPink, shape = RoundedCornerShape(50.dp)) {
                 Text(
                     "Facts: ${viewModel.discoveredCount}",
                     color = DarkText,
@@ -256,16 +247,11 @@ fun UtilityScreen(viewModel: UtilityViewModel) {
                 modifier = Modifier.padding(22.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-
                 Text("🐈", fontSize = 38.sp)
 
                 when {
                     !viewModel.showCatFact -> {
-                        Text(
-                            "Your cat facts are hidden!",
-                            color = DarkText,
-                            fontSize = 17.sp
-                        )
+                        Text("Your cat facts are hidden!", color = DarkText, fontSize = 17.sp)
                     }
 
                     viewModel.isLoading -> {
@@ -279,15 +265,8 @@ fun UtilityScreen(viewModel: UtilityViewModel) {
                     }
 
                     viewModel.utilityData.isBlank() -> {
-                        Text(
-                            "Ready for a fun cat fact?",
-                            color = DarkText,
-                            fontSize = 17.sp
-                        )
-                        Text(
-                            "Tap below to discover something new!",
-                            color = Color.Gray
-                        )
+                        Text("Ready for a fun cat fact?", color = DarkText, fontSize = 17.sp)
+                        Text("Tap below to discover something new!", color = Color.Gray)
                     }
 
                     else -> {
@@ -302,24 +281,19 @@ fun UtilityScreen(viewModel: UtilityViewModel) {
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.End
                         ) {
-                            IconButton(
-                                onClick = { viewModel.toggleFavourite() }
-                            ) {
+                            IconButton(onClick = { viewModel.toggleFavourite() }) {
                                 Icon(
                                     imageVector = if (viewModel.isCurrentFactFavourite)
                                         Icons.Default.Favorite
-                                    else
-                                        Icons.Outlined.FavoriteBorder,
+                                    else Icons.Outlined.FavoriteBorder,
                                     contentDescription = "Toggle favourite",
                                     tint = Pink
                                 )
                             }
 
                             Text(
-                                if (viewModel.isCurrentFactFavourite)
-                                    "Saved"
-                                else
-                                    "Add to favourites",
+                                if (viewModel.isCurrentFactFavourite) "Saved"
+                                else "Add to favourites",
                                 color = Pink,
                                 modifier = Modifier.align(Alignment.CenterVertically),
                                 fontSize = 13.sp
@@ -333,9 +307,7 @@ fun UtilityScreen(viewModel: UtilityViewModel) {
                 Button(
                     onClick = { viewModel.loadData() },
                     enabled = !viewModel.isLoading && viewModel.showCatFact,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(54.dp),
+                    modifier = Modifier.fillMaxWidth().height(54.dp),
                     shape = RoundedCornerShape(16.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Pink)
                 ) {
@@ -348,33 +320,16 @@ fun UtilityScreen(viewModel: UtilityViewModel) {
             }
         }
 
-        Text(
-            "Why we love cats 💗",
-            color = DarkText,
-            fontSize = 21.sp,
-            fontWeight = FontWeight.Bold
-        )
+        Text("Why we love cats 💗", color = DarkText, fontSize = 21.sp, fontWeight = FontWeight.Bold)
 
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            FunCard(
-                "😻", "Cute", "Little bundles of joy",
-                Color(0xFFFFDDE6), Modifier.weight(1f)
-            )
-            FunCard(
-                "🐾", "Curious", "Always exploring",
-                Color(0xFFE5DEFF), Modifier.weight(1f)
-            )
+            FunCard("😻", "Cute", "Little bundles of joy", Color(0xFFFFDDE6), Modifier.weight(1f))
+            FunCard("🐾", "Curious", "Always exploring", Color(0xFFE5DEFF), Modifier.weight(1f))
         }
 
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            FunCard(
-                "💤", "Sleepy", "Professional nappers",
-                Color(0xFFFFEBC8), Modifier.weight(1f)
-            )
-            FunCard(
-                "❤️", "Loving", "Our furry friends",
-                Color(0xFFDDF5E8), Modifier.weight(1f)
-            )
+            FunCard("💤", "Sleepy", "Professional nappers", Color(0xFFFFEBC8), Modifier.weight(1f))
+            FunCard("❤️", "Loving", "Our furry friends", Color(0xFFDDF5E8), Modifier.weight(1f))
         }
 
         Text(
@@ -389,27 +344,12 @@ fun UtilityScreen(viewModel: UtilityViewModel) {
 
 @Composable
 fun FavouritesScreen(viewModel: UtilityViewModel) {
-
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(22.dp),
+        modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(22.dp),
         verticalArrangement = Arrangement.spacedBy(18.dp)
     ) {
-
-        Text(
-            "❤️ Your Favourites",
-            color = DarkText,
-            fontSize = 29.sp,
-            fontWeight = FontWeight.ExtraBold
-        )
-
-        Text(
-            "${viewModel.favouriteFacts.size} lovely facts saved",
-            color = Color.Gray,
-            fontSize = 14.sp
-        )
+        Text("❤️ Your Favourites", color = DarkText, fontSize = 29.sp, fontWeight = FontWeight.ExtraBold)
+        Text("${viewModel.favouriteFacts.size} lovely facts saved", color = Color.Gray, fontSize = 14.sp)
 
         if (viewModel.favouriteFacts.isEmpty()) {
             Card(
@@ -418,21 +358,12 @@ fun FavouritesScreen(viewModel: UtilityViewModel) {
                 colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(30.dp),
+                    modifier = Modifier.fillMaxWidth().padding(30.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     Text("🐱", fontSize = 55.sp)
-
-                    Text(
-                        "No favourites yet!",
-                        color = DarkText,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-
+                    Text("No favourites yet!", color = DarkText, fontSize = 20.sp, fontWeight = FontWeight.Bold)
                     Text(
                         "Go to Home and tap the heart on any cat fact to save it here.",
                         color = Color.Gray,
@@ -443,7 +374,6 @@ fun FavouritesScreen(viewModel: UtilityViewModel) {
             }
         } else {
             viewModel.favouriteFacts.toList().forEachIndexed { index, fact ->
-
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(22.dp),
@@ -458,29 +388,12 @@ fun FavouritesScreen(viewModel: UtilityViewModel) {
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Text(
-                                "🐾 Favourite #${index + 1}",
-                                color = Purple,
-                                fontWeight = FontWeight.Bold
-                            )
-
-                            IconButton(
-                                onClick = { viewModel.removeFavourite(fact) }
-                            ) {
-                                Icon(
-                                    Icons.Default.Favorite,
-                                    contentDescription = "Remove favourite",
-                                    tint = Pink
-                                )
+                            Text("🐾 Favourite #${index + 1}", color = Purple, fontWeight = FontWeight.Bold)
+                            IconButton(onClick = { viewModel.removeFavourite(fact) }) {
+                                Icon(Icons.Default.Favorite, contentDescription = "Remove favourite", tint = Pink)
                             }
                         }
-
-                        Text(
-                            fact,
-                            color = DarkText,
-                            fontSize = 15.sp,
-                            lineHeight = 24.sp
-                        )
+                        Text(fact, color = DarkText, fontSize = 15.sp, lineHeight = 24.sp)
                     }
                 }
             }
@@ -502,9 +415,7 @@ fun FunCard(
         colors = CardDefaults.cardColors(containerColor = background)
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(7.dp)
         ) {
@@ -522,26 +433,12 @@ fun FunCard(
 
 @Composable
 fun SettingsScreen(viewModel: UtilityViewModel) {
-
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(22.dp),
+        modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(22.dp),
         verticalArrangement = Arrangement.spacedBy(22.dp)
     ) {
-
-        Text(
-            "⚙️ Settings",
-            color = DarkText,
-            fontSize = 30.sp,
-            fontWeight = FontWeight.ExtraBold
-        )
-
-        Text(
-            "Make your Catopia experience yours!",
-            color = DarkText.copy(alpha = 0.7f)
-        )
+        Text("⚙️ Settings", color = DarkText, fontSize = 30.sp, fontWeight = FontWeight.ExtraBold)
+        Text("Make your Catopia experience yours!", color = DarkText.copy(alpha = 0.7f))
 
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -549,32 +446,21 @@ fun SettingsScreen(viewModel: UtilityViewModel) {
             colors = CardDefaults.cardColors(containerColor = Color.White)
         ) {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp),
+                modifier = Modifier.fillMaxWidth().padding(20.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        "🐱 Show Cat Facts",
-                        color = DarkText,
-                        fontSize = 17.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-
+                    Text("🐱 Show Cat Facts", color = DarkText, fontSize = 17.sp, fontWeight = FontWeight.Bold)
                     Text(
                         "Control whether cat facts appear on your home screen.",
                         color = Color.Gray,
                         fontSize = 13.sp
                     )
                 }
-
                 Switch(
                     checked = viewModel.showCatFact,
-                    onCheckedChange = {
-                        viewModel.setCatFactVisibility(it)
-                    }
+                    onCheckedChange = { viewModel.setCatFactVisibility(it) }
                 )
             }
         }
@@ -588,24 +474,13 @@ fun SettingsScreen(viewModel: UtilityViewModel) {
                 modifier = Modifier.padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                Text(
-                    "💗 About Catopia",
-                    color = DarkText,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
+                Text("💗 About Catopia", color = DarkText, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 Text(
                     "Catopia is your little corner of the internet for discovering interesting and surprising facts about cats.",
                     color = DarkText.copy(alpha = 0.8f),
                     fontSize = 14.sp
                 )
-
-                Text(
-                    "Version 2.0.0",
-                    color = Purple,
-                    fontWeight = FontWeight.Bold
-                )
+                Text("Version 2.0.0", color = Purple, fontWeight = FontWeight.Bold)
             }
         }
     }
